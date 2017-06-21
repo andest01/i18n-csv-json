@@ -1,0 +1,31 @@
+{
+  "name": "i18n-csv-json",
+  "version": "1.0.0",
+  "description": "A tool to convert dsvs to JSON files for i18n support",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive \"./**/*.test.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andest01/i18n-csv-json.git"
+  },
+  "keywords": [
+    "i18n",
+    "dsv"
+  ],
+  "author": "Stuart Anderson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andest01/i18n-csv-json/issues"
+  },
+  "homepage": "https://github.com/andest01/i18n-csv-json#readme",
+  "dependencies": {
+    "d3-dsv": "^1.0.5",
+    "glob-promise": "^3.1.0",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "mocha": "^3.4.2"
+  }
+}
