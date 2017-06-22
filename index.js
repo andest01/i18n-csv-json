@@ -2,7 +2,7 @@ const fs = require('fs')
 const glob = require('glob-promise')
 const _ = require('lodash')
 const dsv = require('d3-dsv')
-const dsvParser = dsv.dsvFormat('|')
+const dsvParser = dsv.dsvFormat('\t')
 
 const getData = (fileName, type) => {
   return new Promise((resolve, reject) => {
@@ -26,11 +26,9 @@ const deleteIfExists = (pathOfFile) => {
   return new Promise((resolve, reject) => {
     fs.exists(pathOfFile, function(exists) {
       if(exists) {
-        fs.unlink(pathOfFile);
-        resolve()
-      } else {
-        resolve()
+        fs.unlinkSync(pathOfFile);
       }
+      resolve();
     })
   })
 }
@@ -95,17 +93,18 @@ const splitTranslationsIntoLocales = (translationArray, key = 'key') => {
 
 
 const saveDictionaryToJson = async (dictionary, destinationPath) => {
-  console.log('trying to save!')
   let locales = _.forIn(dictionary, async (value, key) => {
-    console.log(`saving ${key} locale`)
     let filePath = `${destinationPath}/${key}.json`
-    console.log(`file path is ${filePath}`)
-    console.log(`deleting... ${filePath}`)
     await deleteIfExists(filePath)
-    console.log(`done deleting... ${filePath}`)
-    console.log(`saving... ${filePath}`)
-    await saveData(value, filePath)
-    console.log(`done saving... ${filePath}`)
+    try {
+      await saveData(value, filePath)
+      const stats = fs.statSync(filePath)
+      const fileSizeInBytes = stats.size
+      const fileSizeInKilobytes = Math.round(fileSizeInBytes / 1000.0, 1)
+      console.log(`done saving '${filePath}' (${fileSizeInKilobytes} kB)`)
+    } catch (error) {
+      console.log(error)
+    }
   })
 }
 

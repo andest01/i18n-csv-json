@@ -28,7 +28,7 @@ const secondItem = {
 describe('I18n to JSON', function() {
   describe('getData', () => {
     it('should get data from pattern', async () => {
-      const pattern = '.i18n.psv'
+      const pattern = '.i18n.tsv'
       const files = await getFiles(pattern)
       assert.ok(files.length > 0);
     })
@@ -36,7 +36,7 @@ describe('I18n to JSON', function() {
 
   describe('convertFileContentsToObject', () => {
     it('should turn string to object', async () => {
-      const pattern = '.i18n.psv'
+      const pattern = '.i18n.tsv'
       const files = await getFiles(pattern)
       const results = convertFileContentsToObject(files[0])
       assert.ok(results[0].key != null);
