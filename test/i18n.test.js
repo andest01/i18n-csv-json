@@ -70,4 +70,10 @@ describe('I18n to JSON', function() {
       await saveDictionaryToJson(localeObject, 'test/i18n')
     })
   })
+
+  describe('exportI18nDsvToJson', () => {
+    it('should save everything.', async () => {
+      await exportI18nDsvToJson('.i18n.tsv', 'test/i18n', 'key')
+    })
+  })
 })

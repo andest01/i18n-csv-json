@@ -45,7 +45,13 @@ const getFiles = async (pattern) => {
 }
 
 const convertFileContentsToObject = (fileContents) => {
-  const results = dsvParser.parse(fileContents)
+  // bostock decided to add another property named `column`
+  // to the results which causes some problems.
+  // i use `map` to get rid of it.
+  // it's a possible performance problem but I need to move forward.
+  const results = dsvParser.parse(fileContents).map(x => {
+    return x
+  })
   return results
 }
 
@@ -79,6 +85,7 @@ const splitTranslationsIntoLocales = (translationArray, key = 'key') => {
       const currentDictionary = dictionary[l]
       const itemKey = item[key]
       const actualTextValue = item[l]
+
       if (currentDictionary[itemKey] != null) {
         throw new Error(`found duplicate key for ${itemKey}. Aborting.`)
       }
@@ -109,9 +116,15 @@ const saveDictionaryToJson = async (dictionary, destinationPath) => {
 }
 
 const exportI18nDsvToJson = async (pattern, destinationPath, key = 'key') => {
-  let dataArray = await getFiles(pattern)
-    .map(convertFileContentsToObject)
-  let data = [].concat.apply(dataArray)
+  // get all the dsv files.
+  const files = await getFiles(pattern)
+  // and turn them into one huge array of objects
+  const dataArray = files.map(convertFileContentsToObject)
+  let oneBigArrayOfObjects = _.flatten(dataArray)
+  // and split the array into a dictionary of dictionaries.
+  let translations = splitTranslationsIntoLocales(oneBigArrayOfObjects, key)
+  // and save the dictionary to disk.
+  saveDictionaryToJson(translations, destinationPath)
 }
 
 module.exports = {

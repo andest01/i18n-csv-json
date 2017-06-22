@@ -4,7 +4,8 @@
   "description": "A tool to convert dsvs to JSON files for i18n support",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive \"./**/*.test.js\""
+    "test": "mocha --recursive \"./**/*.test.js\"",
+    "test:debug": "mocha --inspect --recursive \"./**/*.test.js\""
   },
   "repository": {
     "type": "git",
